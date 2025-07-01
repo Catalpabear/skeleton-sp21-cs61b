@@ -55,6 +55,7 @@ $RECYCLE.BIN/
 *.lnk
 # test-or-hw dir
 Testjava
+.vscode/
 *.pyc
 .DS_Store
 node_modules/
