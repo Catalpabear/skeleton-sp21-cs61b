@@ -9,3 +9,6 @@ We need to finish as follow:
 - Proj3
 ### 6.30
 - [x] lab1
+### 7.1
+I do nothing :worried:
+readbook & finish disc2
