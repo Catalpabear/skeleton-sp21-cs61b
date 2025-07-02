@@ -10,5 +10,5 @@ We need to finish as follow:
 ### 6.30
 - [x] lab1
 ### 7.1
-I do nothing :worried:
+I do nothing :worried:  
 readbook & finish disc2
