@@ -2,6 +2,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "SLList",
+            "request": "launch",
+            "mainClass": "SLList",
+            "projectName": ""
+        },
+        {
+            "type": "java",
+            "name": "commandline",
+            "request": "launch",
+            "mainClass": "commandline",
+            "projectName": ""
+        },
+        {
+            "type": "java",
             "name": "mystery",
             "request": "launch",
             "mainClass": "mystery",

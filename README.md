@@ -1,4 +1,5 @@
-# CS61B-Fork-Repository 
+# CS61B-Fork-Repository
+这是sp21. 
 ## 6.29 started
 We need to finish as follow:
 - Lab1 2 3 4A 4B 6 7 8 12 
@@ -11,4 +12,8 @@ We need to finish as follow:
 - [x] lab1
 ### 7.1
 I do nothing :worried:  
-readbook & finish disc2
+readbook & finish disc2  
+### 7.2
+- [x] lab2  
+- [x] readbook & write intlist & sllist 
+但是gradescope炸了 :angry: :angry:
