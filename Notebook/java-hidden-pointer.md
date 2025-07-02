@@ -3,7 +3,7 @@
 
 ### 没有new赋值的对象是指针
 看看这段代码（节选自61b书本[2.1](https://joshhug.gitbooks.io/hug61b/content/chap2/chap21.html))
-```java
+```java{:linenos}
 public class PollQuestions {
    public static void main(String[] args) {
       Walrus a = new Walrus(1000, 8.3);
