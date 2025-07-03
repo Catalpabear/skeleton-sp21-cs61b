@@ -18,4 +18,4 @@ readbook & finish disc2
 - [x] readbook & write intlist & sllist   
 但是gradescope炸了 :angry: :angry:  
 ### 7.3
-睡觉,醒来玩到22点,proj0差点就写完了:angry:
+睡觉,醒来玩到22点,proj0差点就写完了 :angry:
