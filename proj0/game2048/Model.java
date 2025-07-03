@@ -113,12 +113,115 @@ public class Model extends Observable {
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
-
+        /*   I will use board.move,board.set_view  board.tile  */
+        board.setViewingPerspective(side);
+        boolean[][] has_merged = new boolean[2][4];
+        int row1= 2;//左下角是坐标原点
+        for (int col = 0; col < board.size(); col++) {
+            Tile t=board.tile(col, row1);
+            if(t==null) {
+                continue;
+            }
+            if (board.tile(col, row1+1)==null) {
+                changed = true;
+            }
+            if(secure_move(board.tile(col,row1+1),t,col,row1+1)){
+                changed = true;
+                score += board.tile(col,row1+1).value();
+                has_merged[0][col] = true;
+            }
+        }//遍历第二行，判断是否能与第一行合并，能合并返回true并加分
+        int row2= 1;
+        for (int col = 0; col < board.size(); col++) {
+            Tile t=board.tile(col, row2);
+            if(t==null) {
+                continue;
+            }
+           if (board.tile(col,2)==null) {
+               if(board.tile(col,3)==null) {
+                   changed = true;
+                   board.move(col,row2+2,t);
+               }else{
+                   if(!has_merged[0][col]) {
+                        if(secure_move(board.tile(col,3),t)) {
+                            changed = true;
+                            score += board.tile(col, row2 + 2).value();
+                            has_merged[0][col] = true;
+                       }
+                   }//这种情况涉及多merge
+                   else{
+                       changed = true;
+                       board.move(col,row2+1,t);
+                   }
+               }
+           }
+           else {
+               if (secure_move(board.tile(col, row2 + 1), t)) {
+                   changed = true;
+                   score += board.tile(col, row2 + 1).value();
+                   has_merged[1][col] = true;
+               }
+           }
+        }//遍历第三行，判断是否能移至第一行,或者与第二行合并
+        int row3=0;
+        for (int col = 0; col < board.size(); col++) {
+            Tile t=board.tile(col, row3);
+            if(t==null) {
+                continue;
+            }
+            if (board.tile(col,1)==null) {
+                if(board.tile(col,2)==null) {
+                    if(board.tile(col,3)==null) {
+                        changed = true;
+                        board.move(col,row3+3,t);
+                    }else{
+                        changed = true;
+                        if(!has_merged[0][col]) {
+                            if (secure_move(board.tile(col, row3 + 3), t)) {
+                                    score += board.tile(col, row3 + 3).value();
+                            }
+                        }else{
+                            board.move(col,row3+2,t);
+                        }//这种情况涉及多merge
+                    }
+                }else{
+                    changed = true;
+                    if(!has_merged[1][col]) {
+                        if(secure_move(board.tile(col,row3+2),t)){
+                            score += board.tile(col,row3+2).value();
+                        }
+                    }
+                    else{
+                        board.move(col,row3+1,t);
+                    }//这种情况涉及多merge
+                }
+            }else{
+                if(secure_move(board.tile(col,row3+1),t)) {
+                    changed = true;
+                    score += board.tile(col,row3+1).value();
+                }
+            }
+        }//遍历第四行，判断是否能移至第一行,或者第二行,或者与第三行合并
         checkGameOver();
+        board.setViewingPerspective(Side.NORTH);
         if (changed) {
             setChanged();
         }
         return changed;
+    }
+    private boolean secure_move(Tile a,Tile b){
+        if(nulltozero(a)==nulltozero(b)) {
+            return board.move(a.col(),a.row(),b);
+        }
+        return false;
+    }
+    private boolean secure_move(Tile a,Tile b,int col,int row){
+        if(nulltozero(a)==nulltozero(b)) {
+            return board.move(a.col(),a.row(),b);
+        }else if(a==null){
+            return board.move(col,row,b);
+        }
+        return false;
     }
 
     /** Checks if the game is over and sets the gameOver variable
@@ -138,6 +241,13 @@ public class Model extends Observable {
      * */
     public static boolean emptySpaceExists(Board b) {
         // TODO: Fill in this function.
+        for (int row = 0; row < b.size(); row++) {
+            for (int col = 0; col < b.size(); col++) {
+                if(b.tile(row,col)==null) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -148,6 +258,13 @@ public class Model extends Observable {
      */
     public static boolean maxTileExists(Board b) {
         // TODO: Fill in this function.
+        for (int row = 0; row < b.size(); row++) {
+            for (int col = 0; col < b.size(); col++) {
+                if(nulltozero(b.tile(row,col))==MAX_PIECE) {
+                        return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -159,9 +276,41 @@ public class Model extends Observable {
      */
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
+        if (emptySpaceExists(b)) {
+            return true;
+        }
+        for (int row = 0; row < b.size()-1; row++) {
+            for (int col = 0; col < b.size()-1; col++) {
+                if(nulltozero(b.tile(row,col))==
+                        nulltozero(b.tile(row,col+1))
+                    ||(nulltozero(b.tile(row,col))==
+                        nulltozero(b.tile(row+1,col)))){
+                    return true;
+                }
+            }
+        }
+        for (int col=0;col<b.size()-1; col++) {
+            int row=b.size()-1;
+            if(nulltozero(b.tile(row,col))==nulltozero(b.tile(row,col+1))){
+                return true;
+            }
+        }
+        for (int row=0;row<b.size()-1; row++) {
+            int col=b.size()-1;
+            if(nulltozero(b.tile(row,col))==nulltozero(b.tile(row+1,col))){
+               return true;
+            }
+        }
         return false;
     }
-
+    private static int nulltozero(Tile t){
+        if(t==null) {
+            return 0;
+        }
+        else{
+            return t.value();
+        }
+    }
 
     @Override
      /** Returns the model as a string, used for debugging. */

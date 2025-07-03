@@ -15,5 +15,7 @@ I do nothing :worried:
 readbook & finish disc2  
 ### 7.2
 - [x] lab2  
-- [x] readbook & write intlist & sllist 
-但是gradescope炸了 :angry: :angry:
+- [x] readbook & write intlist & sllist   
+但是gradescope炸了 :angry: :angry:  
+### 7.3
+睡觉,醒来玩到22点,proj0差点就写完了:angry:
