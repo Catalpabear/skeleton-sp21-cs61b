@@ -18,4 +18,11 @@ readbook & finish disc2
 - [x] readbook & write intlist & sllist   
 但是gradescope炸了 :angry: :angry:  
 ### 7.3
-睡觉,醒来玩到22点,proj0差点就写完了 :angry:
+睡觉,醒来玩到22点,proj0差点就写完了 :angry
+### 7.4
+啥都没干...
+### 7.5
+- [x] proj0 2048
+完成了**proj0**嘻嘻嘻嘻,还发现一个有趣的小玩意:我从键盘读入**上下左右**的时候  
+那个程序里变量记录的是中文"向左箭头",所以还更改了一下GUISource.java里的switch语句  
+神奇win11中文版 :smile:

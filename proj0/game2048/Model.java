@@ -125,7 +125,7 @@ public class Model extends Observable {
             if (board.tile(col, row1+1)==null) {
                 changed = true;
             }
-            if(secure_move(board.tile(col,row1+1),t,col,row1+1)){
+            if(secure_move(col,row1+1,t)){
                 changed = true;
                 score += board.tile(col,row1+1).value();
                 has_merged[0][col] = true;
@@ -143,20 +143,23 @@ public class Model extends Observable {
                    board.move(col,row2+2,t);
                }else{
                    if(!has_merged[0][col]) {
-                        if(secure_move(board.tile(col,3),t)) {
+                        if(secure_move(col,3,t)) {
                             changed = true;
                             score += board.tile(col, row2 + 2).value();
                             has_merged[0][col] = true;
+                       }//这种情况涉及多merge
+                       else{
+                           changed = true;
+                           board.move(col,row2+1,t);
                        }
-                   }//这种情况涉及多merge
-                   else{
+                   }else{
                        changed = true;
                        board.move(col,row2+1,t);
                    }
                }
            }
            else {
-               if (secure_move(board.tile(col, row2 + 1), t)) {
+               if (secure_move(col, row2 + 1, t)) {
                    changed = true;
                    score += board.tile(col, row2 + 1).value();
                    has_merged[1][col] = true;
@@ -177,8 +180,10 @@ public class Model extends Observable {
                     }else{
                         changed = true;
                         if(!has_merged[0][col]) {
-                            if (secure_move(board.tile(col, row3 + 3), t)) {
+                            if (secure_move(col, row3 + 3, t)) {
                                     score += board.tile(col, row3 + 3).value();
+                            }else{
+                                board.move(col,row3+2,t);
                             }
                         }else{
                             board.move(col,row3+2,t);
@@ -187,8 +192,10 @@ public class Model extends Observable {
                 }else{
                     changed = true;
                     if(!has_merged[1][col]) {
-                        if(secure_move(board.tile(col,row3+2),t)){
+                        if(secure_move(col,row3+2,t)){
                             score += board.tile(col,row3+2).value();
+                        }else {
+                            board.move(col,row3+1,t);
                         }
                     }
                     else{
@@ -196,7 +203,7 @@ public class Model extends Observable {
                     }//这种情况涉及多merge
                 }
             }else{
-                if(secure_move(board.tile(col,row3+1),t)) {
+                if(secure_move(col,row3+1,t)) {
                     changed = true;
                     score += board.tile(col,row3+1).value();
                 }
@@ -209,19 +216,15 @@ public class Model extends Observable {
         }
         return changed;
     }
-    private boolean secure_move(Tile a,Tile b){
-        if(nulltozero(a)==nulltozero(b)) {
-            return board.move(a.col(),a.row(),b);
-        }
-        return false;
-    }
-    private boolean secure_move(Tile a,Tile b,int col,int row){
-        if(nulltozero(a)==nulltozero(b)) {
-            return board.move(a.col(),a.row(),b);
-        }else if(a==null){
+
+    private boolean secure_move(int col,int row,Tile b){
+        if(board.tile(col,row)==null) {
             return board.move(col,row,b);
+        } else if (nulltozero(board.tile(col,row))==nulltozero(b)) {
+            return board.move(col,row,b);
+        }else {
+            return false;
         }
-        return false;
     }
 
     /** Checks if the game is over and sets the gameOver variable
