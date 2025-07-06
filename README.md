@@ -26,3 +26,5 @@ readbook & finish disc2
 完成了**proj0**嘻嘻嘻嘻,还发现一个有趣的小玩意:我从键盘读入**上下左右**的时候  
 那个程序里变量记录的是中文"向左箭头",所以还更改了一下GUISource.java里的switch语句  
 神奇win11中文版 :smile:
+### 7.6
+read books(DLList AList Inheritance) 
