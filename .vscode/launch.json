@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "DLList",
+            "request": "launch",
+            "mainClass": "DLList",
+            "projectName": ""
+        },
+        {
+            "type": "java",
             "name": "SLList",
             "request": "launch",
             "mainClass": "SLList",
