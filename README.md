@@ -28,3 +28,7 @@ readbook & finish disc2
 神奇win11中文版 :smile:
 ### 7.6
 read books(DLList AList Inheritance) 
+### 7.7-7.8
+忙着回家，**找学习状态**  
+- [x] lab3  
+准备写proj1 :smile:
