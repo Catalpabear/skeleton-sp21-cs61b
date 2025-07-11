@@ -23,6 +23,13 @@ public class LinkedListDeque<T>  {
         curr_tail = sentinel;
         size=0;
     }
+    private void zero_deque(){
+        curr_head = sentinel;
+        curr_tail = sentinel;
+        sentinel.next = null;
+        sentinel.prev = null;
+    }
+
     public LinkedListDeque(T head_data) {
         sentinel=new Node<>(null, null, null);
         curr_head= new Node<>(head_data, null, sentinel);
@@ -54,6 +61,9 @@ public class LinkedListDeque<T>  {
                 T data=curr_head.next.data;
                 curr_head=curr_head.next.next;
                 size--;
+                if(isEmpty()){
+                    zero_deque();
+                }
                 return data;
             }
         }else{
@@ -75,6 +85,9 @@ public class LinkedListDeque<T>  {
                 T data=curr_tail.prev.data;
                 curr_tail=curr_tail.prev.prev;
                 size--;
+                if(isEmpty()){
+                    zero_deque();
+                }
                 return data;
             }
         }else{
