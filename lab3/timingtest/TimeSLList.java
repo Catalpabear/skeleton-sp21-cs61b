@@ -34,7 +34,7 @@ public class TimeSLList {
             }
             opcou.addLast(10000);
             Stopwatch stopwatch = new Stopwatch();
-            for (int k = 0; k < 10000; k++) {
+            for (int k = 0; k < 40000; k++) {
                 test.getLast();
             }
             times.addLast(stopwatch.elapsedTime());
