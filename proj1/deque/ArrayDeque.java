@@ -1,6 +1,6 @@
 package deque;
 
-public class ArrayDeque<T> {
+public class ArrayDeque<T> implements Deque<T> {
     T[] array;
     int size;
     int first_ins, last_ins;
@@ -13,7 +13,7 @@ public class ArrayDeque<T> {
         first_ins = 0;
         last_ins = 1;
     }
-
+    @Override
     public void addFirst(T element) {
         if (size == capacity) {
             resize(2 * capacity);
@@ -22,6 +22,7 @@ public class ArrayDeque<T> {
         first_ins=secure_sub(first_ins);
         size++;
     }
+    @Override
     public void addLast(T element){
         if (size == capacity) {
             resize(2 * capacity);
@@ -30,7 +31,7 @@ public class ArrayDeque<T> {
         last_ins=secure_add(last_ins);
         size++;
     }
-
+    @Override
     public T removeFirst(){
         if(isEmpty()){
             return null;
@@ -45,6 +46,7 @@ public class ArrayDeque<T> {
         size--;
         return element;
     }
+    @Override
     public T removeLast(){
         if(isEmpty()){
             return null;
@@ -100,9 +102,11 @@ public class ArrayDeque<T> {
     private boolean is_More(){
         return capacity>=16 && ((double)size / capacity < 0.25);
     }
+    @Override
     public int size(){
         return size;
     }
+    @Override
     public T get(int index){
         if (index < 0 || index >= size) {
             return null;
@@ -110,8 +114,13 @@ public class ArrayDeque<T> {
         int realIndex = (first_ins + 1 + index) % capacity;
         return array[realIndex];
     }
-
-    public boolean isEmpty(){
-        return size==0;
+    @Override
+    public void printDeque(){
+        int iter=secure_add(first_ins);
+        while(iter != last_ins){
+            System.out.println(array[iter]+" ");
+            iter=secure_add(iter);
+        }
+        System.out.println();
     }
 }

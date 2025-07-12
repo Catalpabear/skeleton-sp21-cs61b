@@ -94,4 +94,14 @@ public class ArrayDequeTest {
         assertEquals("b", deque.get(1));
         assertEquals("c", deque.get(2));
     }
+    @Test
+    public void testPrintDeque() {
+        ArrayDeque<String> deque = new ArrayDeque<>();
+        deque.addLast("a");
+        deque.addLast("b");
+        deque.addLast("c");
+        deque.addFirst("d");
+        deque.printDeque();
+    }
+
 }

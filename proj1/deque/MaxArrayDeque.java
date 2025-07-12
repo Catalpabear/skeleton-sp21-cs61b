@@ -1,4 +1,10 @@
 package deque;
 
-public class MaxArrayDeque {
+public class MaxArrayDeque<T> extends ArrayDeque<T>{
+//    public MaxArrayDeque(Comparator<T> c){
+//
+//    }
+    public T max(){
+        return null;
+    }
 }

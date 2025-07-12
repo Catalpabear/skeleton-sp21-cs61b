@@ -18,7 +18,7 @@ readbook & finish disc2
 - [x] readbook & write intlist & sllist   
 但是gradescope炸了 :angry: :angry:  
 ### 7.3
-睡觉,醒来玩到22点,proj0差点就写完了 :angry
+睡觉,醒来玩到22点,proj0差点就写完了 :angry:
 ### 7.4
 啥都没干...
 ### 7.5
@@ -34,4 +34,9 @@ read books(DLList AList Inheritance)
 准备写proj1 :smile:
 ### 7.9-7.10
 - [x] lab4  
-- [ ] 
+### 7.11
+lldeque & arraydeque都搞定了✌
+### 7.12
+- [x] proj1  
+奇怪的是，弹吉他好占用内存，copy别人的仓库暂时运行不了 :worried:   
+接下来读读61b文档 :smile:
