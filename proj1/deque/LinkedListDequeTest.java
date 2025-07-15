@@ -2,7 +2,7 @@ package deque;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-
+import java.util.Iterator;
 
 /** Performs some basic linked list tests. */
 public class LinkedListDequeTest {
@@ -145,5 +145,18 @@ public class LinkedListDequeTest {
             deque.addLast("b");
         }
         deque.printDeque();
+    }
+    @Test
+    public void testIterator() {
+        LinkedListDeque<Integer> deque = new LinkedListDeque<>();
+        for (int i = 0; i < 5; i++) {
+            deque.addLast(i);
+        }
+        int expected = 0;
+        for(int i: deque) {
+           assertEquals(expected, i);
+           expected++;
+        }
+        assertEquals(5, expected); // 确保遍历了5个元素
     }
 }

@@ -1,6 +1,8 @@
 package deque;
 
-public class ArrayDeque<T> implements Deque<T> {
+import java.util.Iterator;
+
+public class ArrayDeque<T> implements Deque<T> ,Iterable<T>{
     T[] array;
     int size;
     int first_ins, last_ins;
@@ -122,5 +124,42 @@ public class ArrayDeque<T> implements Deque<T> {
             iter=secure_add(iter);
         }
         System.out.println();
+    }
+
+    @Override
+    public Iterator<T> iterator(){
+        return new AdequeIterator();
+    }
+
+    private class AdequeIterator implements Iterator<T> {
+        private int index;
+        public AdequeIterator() {
+            index = secure_add(first_ins);
+        }
+        @Override
+        public T next(){
+            int temp=index;
+            index=secure_add(index);
+            return array[temp];
+        }
+        @Override
+        public boolean hasNext(){
+            return index != last_ins;
+        }
+    }
+    @Override
+    public boolean equals(Object obj){
+        if(obj==null|| !(obj instanceof ArrayDeque || ((Deque<?>) obj).size() != this.size()) ){
+            return false;
+        }
+        if(obj==this){
+            return true;
+        }
+        for(int i=0;i<size;i++){
+            if(!(this.get(i).equals( ( (Deque<?>)obj ).get(i) ))){
+                return false;
+            }
+        }
+        return true;
     }
 }

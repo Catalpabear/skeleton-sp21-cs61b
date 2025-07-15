@@ -1,7 +1,7 @@
 package deque;
 import org.junit.Test;
 import static org.junit.Assert.*;
-
+import java.util.Iterator;
 public class ArrayDequeTest {
 
     @Test
@@ -104,4 +104,18 @@ public class ArrayDequeTest {
         deque.printDeque();
     }
 
+
+    @Test
+    public void testIterator() {
+        ArrayDeque<Integer> deque = new ArrayDeque<>();
+        for (int i = 0; i < 5; i++) {
+            deque.addLast(i);
+        }
+        int expected = 0;
+        for(int i: deque) {
+           assertEquals(expected, i);
+           expected++;
+        }
+        assertEquals(5, expected); // 确保遍历了5个元素
+    }
 }
