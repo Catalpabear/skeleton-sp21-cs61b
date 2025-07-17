@@ -29,7 +29,7 @@ public class TestArrayDequeEC {
             } else {
                 Integer s = stu.removeLast();
                 Integer a = arr.removeLast();
-                msg.append("removeLast(): ").append(a).append("\n");
+                msg.append("removeLast()").append("\n");
                 assertEquals(msg.toString(),a, s);
             }
         }
