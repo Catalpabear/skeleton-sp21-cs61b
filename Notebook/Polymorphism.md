@@ -89,6 +89,6 @@ public interface Iterator<T> {
 }
 ```
 使用时,添加私有内部类 `classIterator` , 重写 hasNext next 方法  
-在原本类中也重写 `Iterator<T> iterator()` 方法 , 只返回 new classIterator(); 即可
+在原本类中也重写 `Iterator<T> iterator()` 方法 , 只返回 `new classIterator();` 即可
 
 

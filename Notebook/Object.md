@@ -59,4 +59,4 @@ public static <K> ArraySet<K> of(K... stuf){
 ```
 **`K... stuf`** 表示可变参数 , 在函数体中可通过 `for(k i:stuf)` 循环获取其中的元素  
   
-关于<K> , 查看[静态泛型方法](./Generics%20and%20Autoboxing.md)
+关于< K > , 查看[静态泛型方法](./Generics%20and%20Autoboxing.md)

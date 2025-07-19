@@ -2,6 +2,18 @@
     "configurations": [
         {
             "type": "java",
+            "name": "View",
+            "request": "launch",
+            "mainClass": "View"
+        },
+        {
+            "type": "java",
+            "name": "view",
+            "request": "launch",
+            "mainClass": "view"
+        },
+        {
+            "type": "java",
             "name": "DLList",
             "request": "launch",
             "mainClass": "DLList",
