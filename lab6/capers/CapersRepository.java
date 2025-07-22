@@ -1,6 +1,8 @@
 package capers;
 
 import java.io.File;
+import java.io.IOException;
+
 import static capers.Utils.*;
 
 /** A repository for Capers 
@@ -18,7 +20,8 @@ public class CapersRepository {
     static final File CWD = new File(System.getProperty("user.dir"));
 
     /** Main metadata folder. */
-    static final File CAPERS_FOLDER = null; // TODO Hint: look at the `join`
+    static final File CAPERS_FOLDER =
+            Utils.join(System.getProperty("user.dir"),".capers"); // TODO Hint: look at the `join`
                                             //      function in Utils
 
     /**
@@ -32,6 +35,22 @@ public class CapersRepository {
      */
     public static void setupPersistence() {
         // TODO
+        File f1=CAPERS_FOLDER;
+        if(!f1.exists()) {
+            f1.mkdir();
+        }
+        File f2=Utils.join(CAPERS_FOLDER,"dogs");
+        if(!f2.exists()) {
+            f2.mkdir();
+        }
+        File f3=new File(CAPERS_FOLDER,"story");
+        if(!f3.exists()) {
+            try{
+                f3.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     /**
@@ -41,6 +60,11 @@ public class CapersRepository {
      */
     public static void writeStory(String text) {
         // TODO
+        File story= Utils.join(CAPERS_FOLDER,"story");
+        String return_story = Utils.readContentsAsString(story);
+        return_story=return_story+text+"\n";
+        Utils.writeContents(story,return_story);
+        System.out.print(return_story);
     }
 
     /**
@@ -50,6 +74,9 @@ public class CapersRepository {
      */
     public static void makeDog(String name, String breed, int age) {
         // TODO
+        Dog dog=new Dog(name,breed,age);
+        dog.saveDog();
+        System.out.print(dog.toString());
     }
 
     /**
@@ -60,5 +87,9 @@ public class CapersRepository {
      */
     public static void celebrateBirthday(String name) {
         // TODO
+        Dog dog = Dog.fromFile(name);
+        if (dog != null) {
+            dog.haveBirthday();
+        }
     }
 }
