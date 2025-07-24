@@ -60,3 +60,13 @@ public static <K> ArraySet<K> of(K... stuf){
 **`K... stuf`** 表示可变参数 , 在函数体中可通过 `for(k i:stuf)` 循环获取其中的元素  
   
 关于< K > , 查看[静态泛型方法](./Generics%20and%20Autoboxing.md)
+
+## hashCode()
+Java 通过确定 Object 在内存中的位置来计算这个值,这个方法为每个 Java 对象提供一个唯一的哈希码.  
+重写此方法 , 改变生成哈希码[^1]的方式.  
+[^1]:In computer science, taking an object and converting it into some integer is called "computing the hash code of the object".
+   
+合法的哈希码需要满足:
+- 整数
+- 连续运行两次时返回相同的数字
+- equal()方法为true的两个对象有相同的哈希码

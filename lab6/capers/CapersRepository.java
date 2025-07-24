@@ -90,6 +90,7 @@ public class CapersRepository {
         Dog dog = Dog.fromFile(name);
         if (dog != null) {
             dog.haveBirthday();
+            dog.saveDog();
         }
     }
 }

@@ -91,4 +91,20 @@ public interface Iterator<T> {
 使用时,添加私有内部类 `classIterator` , 重写 hasNext next 方法  
 在原本类中也重写 `Iterator<T> iterator()` 方法 , 只返回 `new classIterator();` 即可
 
+增强型for循环
+```java
+for(String s : am){
+  sout(am);
+}
+```
+相当于
+```java
+ArrayMap.KeyIterator ami = am.new KeyIterator();
+
+while (ami.hasNext()) {
+    System.out.println(ami.next());
+}
+```
+----
+
 

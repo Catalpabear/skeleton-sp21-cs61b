@@ -30,3 +30,9 @@ private class BST<K> {
 树应该有以下方法:find insert delete 
    
 均使用递归实现.
+
+### delete
+实现时需要考虑三种情况:
+- 删除叶子
+- 删除有一个子的节点
+- 删除有两个子的节点
