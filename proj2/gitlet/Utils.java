@@ -14,9 +14,8 @@ import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Formatter;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 /** Assorted utilities.
@@ -79,6 +78,21 @@ class Utils {
             return false;
         }
     }
+
+    /** if .gitlet exists in the current dir, return true, false otherwise */
+    static boolean hasGitRepo() {
+        File check = new File(Main.checkPath, ".gitlet");
+        return (check.exists() && check.isDirectory());
+    }
+    /** make unixTimeStamp a UTC String */
+    public static String makeUTCTimestamp(long unixTimestamp) {
+        Date date = new Date(unixTimestamp * 1000L);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss y-M-d");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return sdf.format(date);
+    }
+
+
 
     /** Deletes the file named FILE if it exists and is not a directory.
      *  Returns true if FILE was deleted, and false otherwise.  Refuses
