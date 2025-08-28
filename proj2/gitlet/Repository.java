@@ -1,6 +1,7 @@
 package gitlet;
 
 import java.io.File;
+import java.nio.file.FileSystems;
 import java.util.List;
 
 import static gitlet.Utils.*;
@@ -23,14 +24,16 @@ public class Repository {
      */
 
     /** The current working directory. */
+    public static final String fileSepChar = FileSystems.getDefault().getSeparator();
+
     public static final File CWD = new File(System.getProperty("user.dir"));
     /** The .gitlet directory. */
     public static final File GITLET_DIR = join(CWD, ".gitlet");
-    public static final File GITLET_COMMIT = join(GITLET_DIR, "\\commits");
-    public static final File GITLET_BRANCH = join(GITLET_DIR, "\\branches");
-    public static final File GITLET_STAGE = join(GITLET_DIR, "\\stage");
-    public static final File GITLET_BLOB = join(GITLET_DIR, "\\blobs");
-    public static final File GITLET_HEAD = join(GITLET_DIR, "\\HEAD");
+    public static final File GITLET_COMMIT = join(GITLET_DIR, "commits");
+    public static final File GITLET_BRANCH = join(GITLET_DIR, "branches");
+    public static final File GITLET_STAGE = join(GITLET_DIR, "stage");
+    public static final File GITLET_BLOB = join(GITLET_DIR, "blobs");
+    public static final File GITLET_HEAD = join(GITLET_DIR, "HEAD");
     /* TODO: fill in the rest of this class. */
 
     public static void add(String filename) {

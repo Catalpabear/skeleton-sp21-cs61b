@@ -12,15 +12,15 @@ public class Init {
             return;
         }
         File mkgit = new File(System.getProperty("user.dir"));
-        mkgit = Utils.join(mkgit, "\\.gitlet");
+        mkgit = Utils.join(mkgit, ".gitlet");
         mkgit.mkdir();
-        Utils.join(mkgit, "\\blobs").mkdir();
-        Utils.join(mkgit, "\\commits").mkdir();
-        Utils.join(mkgit, "\\stage").createNewFile();
-        Utils.join(mkgit, "\\branches").mkdir();
-        Utils.join(mkgit, "\\logs").mkdir();
-        Utils.join(mkgit, "\\branches\\master").createNewFile();
-        File head = new File(mkgit, "\\HEAD");
+        Utils.join(mkgit, "blobs").mkdir();
+        Utils.join(mkgit, "commits").mkdir();
+        Utils.join(mkgit, "stage").createNewFile();
+        Utils.join(mkgit, "branches").mkdir();
+        Utils.join(mkgit, "logs").mkdir();
+        Utils.join(mkgit, "branches" + fileSepChar + "master").createNewFile();
+        File head = new File(mkgit, "HEAD");
         head.createNewFile();
         Utils.writeContents(head, "master");
 
