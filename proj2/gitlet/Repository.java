@@ -297,7 +297,7 @@ public class Repository {
     }
     private static void helpCheckout(Commit commit,String filename){
         String hashID = commit.getValueHashID(filename);
-        if(hashID != null){
+        if(hashID == null){
             System.out.println("File does not exist in that commit.");
             System.exit(0);
         }

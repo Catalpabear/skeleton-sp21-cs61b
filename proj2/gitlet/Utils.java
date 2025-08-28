@@ -87,7 +87,7 @@ class Utils {
     /** make unixTimeStamp a UTC String */
     public static String makeUTCTimestamp(long unixTimestamp) {
         Date date = new Date(unixTimestamp * 1000L);
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss y-M-d");
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss yyyy Z", Locale.ENGLISH);
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         return sdf.format(date);
     }
