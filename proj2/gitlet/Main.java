@@ -20,7 +20,7 @@ public class Main {
             System.out.println("Please enter a command.");
             System.exit(0);
         }
-        if(args.length > 4){// TODO: need to fix
+        if(args.length > 4){// TODO: need to fix by "operand set"
             System.out.println("Incorrect operands.");
             System.exit(0);
         }
@@ -46,6 +46,46 @@ public class Main {
             case "commit":
                 // handle commit "stringContents"
                 Repository.commit(args[1]);
+                break;
+            case "rm":
+                // handle the `add [filename]` command
+                Repository.remove(args[1]);
+                break;
+            case "log":
+                Repository.log();
+                break;
+            case "global-log":
+                Repository.globalLog();
+                break;
+            case "find":
+                Repository.find(args[1]);
+                break;
+            case "status":
+                Repository.status();
+                break;
+            case "checkout":
+                if(args[1].equals("--")){
+                    Repository.checkout(args[2],false);
+                } else if (args[2].equals("--")) {
+                    Repository.checkout(args[1],args[3]);
+                }else if(args.length == 2){
+                    Repository.checkout(args[1],true);
+                }else{
+                    System.out.println("Incorrect operands.");
+                    System.exit(0);
+                }
+                break;
+            case "branch":
+                Repository.branch(args[1]);
+                break;
+            case "rm-branch":
+                Repository.rmBranch(args[1]);
+                break;
+            case "reset":
+                Repository.reset(args[1]);
+                break;
+            case "merge":
+                Repository.merge(args[1]);
                 break;
             default:
                 System.out.println("No command with that name exists.");

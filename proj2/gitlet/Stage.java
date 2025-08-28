@@ -53,6 +53,12 @@ public class Stage implements Serializable{
     public boolean isEmpty(){
         return addHashId.isEmpty() && rmHashId.isEmpty();
     }
+    public boolean addHashIsEmpty(){
+        return addHashId.isEmpty();
+    }
+    public boolean rmHashIsEmpty(){
+        return rmHashId.isEmpty();
+    }
 
     public Map<String,String> getAddHashId(){
         return addHashId;

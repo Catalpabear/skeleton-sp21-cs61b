@@ -3,6 +3,7 @@ package gitlet;
 // TODO: any imports you need here
 import static gitlet.Repository.*;
 import static gitlet.Utils.readContentsAsString;
+import static gitlet.Utils.readObject;
 
 import java.io.File;
 import java.io.Serializable;
@@ -22,7 +23,7 @@ public class Commit implements Serializable {
      * comment above them describing what that variable represents and how that
      * variable is used. We've provided one example for `message`.
      */
-
+    private static final long serialVersionUID = 2L;
     /** The message of this Commit. */
     private String message;
     /** The time of this Commit */
@@ -37,7 +38,7 @@ public class Commit implements Serializable {
     /* TODO: fill in the rest of this class. */
     public Commit() {
         this.message = "initial commit";
-        this.timestamp = "0";
+        this.timestamp = Utils.makeUTCTimestamp(0L);
         this.blobHashId = new HashMap<>();
         this.commitHashId = Utils.sha1(this.message,this.timestamp);
         this.parentHashId = null;
@@ -46,10 +47,20 @@ public class Commit implements Serializable {
     public String getCommitHashId(){
         return commitHashId;
     }
+    public String getParentHashId(){
+        return parentHashId;
+    }
+    public Commit getParentCommit(){
+        File parentFile = new File(GITLET_COMMIT, parentHashId);
+        return readObject(parentFile, Commit.class);
+    }
+    public String getMessage(){
+        return message;
+    }
 
     public Commit(String message, Commit commit,Stage stage) {
         this.message = message;
-        this.timestamp = Utils.makeUTCTimestamp(System.currentTimeMillis());
+        this.timestamp = Utils.makeUTCTimestamp(System.currentTimeMillis()/1000L + 28800L);
 
         this.blobHashId = new HashMap<>(commit.blobHashId);
         //更改已拷贝提交里面的Blob值
@@ -67,6 +78,25 @@ public class Commit implements Serializable {
     }
     public boolean containsHash(String hashId){
         return blobHashId.containsValue(hashId);
+    }
+
+    public String getValueHashID(String filename){
+        return blobHashId.get(filename);
+    }
+
+    public Set<String> getBlobFileName(){
+        return blobHashId.keySet();
+    }
+    public Collection<String> getBlobHashId(){
+        return blobHashId.values();
+    }
+
+    @Override
+    public String toString(){
+        return "===\n" +
+                "commit " + commitHashId + "\n" +
+                "Date: " + timestamp + "\n" +
+                message + "\n";
     }
 
 }
