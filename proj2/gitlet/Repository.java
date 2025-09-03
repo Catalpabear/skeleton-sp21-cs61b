@@ -277,7 +277,7 @@ public class Repository {
             //Any files that are tracked in the current branch but are not present in the checked-out branch are deleted.
             for(String file: currentCommit.getBlobFileName()){
                 if(!commitOfBranch.getBlobFileName().contains(file)){
-                    File fileWillDel = new File(CWD, filename);
+                    File fileWillDel = new File(CWD, file);
                     if(fileWillDel.exists()) {
                         fileWillDel.delete();
                     }
@@ -287,12 +287,13 @@ public class Repository {
             for(String hashId: commitOfBranch.getBlobHashId()){
                 reliefBlob2File(hashId);
             }
+            Utils.writeContents(GITLET_HEAD,branchName);
             Stage stage = Utils.readObject(GITLET_STAGE, Stage.class);
             stage.clear();
         }
     }
     public static void checkout(String commitHashId, String filename){
-        Commit commit = getPointCommit(commitHashId);
+        Commit commit = getPointCommit(commitHashId); //TODO: 前六位查找
         helpCheckout(commit,filename);
     }
     private static void helpCheckout(Commit commit,String filename){
@@ -335,14 +336,86 @@ public class Repository {
         branchFile.delete();
     }
 
-    //TODO: reset merge
-
     public static void reset(String commitHashId){
+        Commit currentCommit = getCurrentCommit();
+        // get commit in this hashcode
+        Commit commitOfBranch = Utils.readObject(new File(GITLET_COMMIT,commitHashId), Commit.class);
+        // check whether an untracked file will be created or not
+        for (String file: commitOfBranch.getBlobFileName()){
+            if(!currentCommit.getBlobFileName().contains(file)){  //遍历还原的所有文件， 存在未追踪的则停止程序
+                System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
+                System.exit(0);
+            }
+        }
+        for(String file: currentCommit.getBlobFileName()){
+            if(!commitOfBranch.getBlobFileName().contains(file)){
+                File fileWillDel = new File(CWD, file);
+                if(fileWillDel.exists()) {
+                    fileWillDel.delete();
+                }
+            }
+        }
+        // relief all of file
+        for(String hashId: commitOfBranch.getBlobHashId()){
+            reliefBlob2File(hashId);
+        }
+        
+        File currentBranchFile = new File(GITLET_BRANCH, readContentsAsString(GITLET_HEAD));
+        Utils.writeContents(currentBranchFile,commitHashId);
 
+        Stage stage = Utils.readObject(GITLET_STAGE, Stage.class);
+        stage.clear();
     }
 
     public static void merge(String branchName){
 
+        // exception check
+        // 暂存区非空，需要提交
+        Stage stage = readObject(GITLET_STAGE, Stage.class);
+        if(!stage.isEmpty()){
+            System.out.println("You have uncommitted changes.");
+        }
+        File branchFile = new File(GITLET_BRANCH, branchName);
+        if(!branchFile.exists()){
+            System.out.println("A branch with that name does not exist.");
+            System.exit(0);
+        }
+        String commitOfBranchHashId = readContentsAsString(branchFile); // 给定分支指向的提交ID
+        Commit ancestorCommit = findCommonAncestor();                   // 最新公共父提交
+        // 没有分叉， 不需要合并
+        if(commitOfBranchHashId.equals(ancestorCommit.getCommitHashId())){
+            System.out.println("Given branch is an ancestor of the current branch.");
+            System.exit(0);
+        }
+        File currentBranch = new File(GITLET_BRANCH, readContentsAsString(GITLET_HEAD) );// 当前分支的文件，读取获得当前提交的ID
+        // 不能将分支与自身合并
+        if(commitOfBranchHashId.equals(readContentsAsString(GITLET_HEAD))){
+            System.out.println("Cannot merge a branch with itself.");
+            System.exit(0);
+        }
+        // 给定分支在当前分支前面
+        if(ancestorCommit.getCommitHashId().equals(readContentsAsString(currentBranch))){
+            System.out.println("Current branch fast-forwarded.");
+            System.exit(0);
+        }
+        // start to work
+        // TODO: a exception named "There is an untracked file in the way; delete it, or add and commit it first." at working to deal with
+        // case 1 : 从分叉点开始, 当前分支未修改的文件(=split) 如果在给定分支已经修改(!=split), 需要被给定分支替换, 并且暂存
+        // case 2 : 从分叉点开始, 当前分支已修改的文件(!=split) 并且在给定分支未修改(=split), 保持原样
+        // case 3 : 从分叉点开始, 当前分支和给定分支修改完全一样的文件和 CWD下未跟踪的文件, 保持原样
+        // case 4 : 当前分支对比分叉点新增的文件应该存在
+        // case 5 : 仅在给定分支存在的文件, 直接移入当前分支, 并且暂存
+        // case 6 : 从分叉点开始, 当前分支未修改的文件(=split) 并且给定分支不存在, 需要移除(下次提交不跟踪)
+        // case 7 : 从分叉点开始, 给定分支未修改的文件(=split) 并且当前分支不存在, 不需要做什么(不用把文件加入当前分支)
+        // case 8 : 当前分支和给定分支修改 存在冲突的文件, 将两个文件的内容进行简单的拼接 用 "===\n" 分隔
+        // 以不同方式修改可以指两个文件的内容都发生了变化且与其他不同，或者一个文件的内容发生了变化而另一个文件被删除，或者该文件在分叉点时不存在，而在给定分支和当前分支中具有不同的内容。
+        // TODO: a exception named "Encountered a merge conflict." at appearing merge conflict to deal with
+
+        // TODO: after finishing work write a merge log to current commit (merge type will be update to 1 and toString method will change)
     }
 
+    private static Commit findCommonAncestor(){
+
+        return null;
+    }
 }
