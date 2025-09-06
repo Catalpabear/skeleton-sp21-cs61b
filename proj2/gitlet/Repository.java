@@ -55,7 +55,7 @@ public class Repository {
 
         //If the file unmodified and is in commit, it'll remove from addStage and after that we do nothing
         if(commit.containsHash(fileHashId)) {
-            if(forAdd.containHashIdInAddStage(fileHashId)) {
+            if(forAdd.containHashIdInAddStage(fileHashId) && forAdd.containInAddStage(filename)) {
                 forAdd.RmFromAddStage(filename,fileHashId);
             }
             return;
@@ -222,7 +222,7 @@ public class Repository {
     private static void printRemoved(){
         System.out.println("=== Removed Files ===");
         Stage forStatus = Utils.readObject(GITLET_STAGE, Stage.class);
-        if(forStatus.addHashIsEmpty()){
+        if(forStatus.rmHashIsEmpty()){
             System.out.println();
             return;
         }

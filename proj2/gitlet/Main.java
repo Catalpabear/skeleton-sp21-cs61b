@@ -66,10 +66,10 @@ public class Main {
             case "checkout":
                 if(args[1].equals("--")){
                     Repository.checkout(args[2],false);
-                } else if (args[2].equals("--")) {
-                    Repository.checkout(args[1],args[3]);
-                }else if(args.length == 2){
+                } else if (args.length == 2) {
                     Repository.checkout(args[1],true);
+                }else if(args[2].equals("--")){
+                    Repository.checkout(args[1],args[3]);
                 }else{
                     System.out.println("Incorrect operands.");
                     System.exit(0);
