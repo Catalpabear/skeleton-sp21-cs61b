@@ -54,7 +54,7 @@ public class Repository {
         Commit commit = getCurrentCommit();
 
         //If the file unmodified and is in commit, it'll remove from addStage and after that we do nothing
-        if(commit.containsHash(fileHashId)) {
+        if(commit.containsHash(fileHashId) && commit.containsFileName(filename)) {
             if(forAdd.containHashIdInAddStage(fileHashId) && forAdd.containInAddStage(filename)) {
                 forAdd.RmFromAddStage(filename,fileHashId);
             }
@@ -129,6 +129,7 @@ public class Repository {
        if(tracked) {
            forRemove.addRmHashId(filename,fileHashId);
        }
+
        File file = new File(CWD, filename);
        if(file.exists()) {
            file.delete();
