@@ -54,10 +54,11 @@ public class Repository {
         Commit commit = getCurrentCommit();
 
         //If the file unmodified and is in commit, it'll remove from addStage and after that we do nothing
-        if(commit.containsHash(fileHashId) && commit.containsFileName(filename)) {
+        if(commit.hasKeyAndValue(filename,fileHashId)) {
             if(forAdd.containHashIdInAddStage(fileHashId) && forAdd.containInAddStage(filename)) {
                 forAdd.RmFromAddStage(filename,fileHashId);
             }
+            Utils.writeObject(GITLET_STAGE, forAdd);
             return;
         }
 
@@ -106,8 +107,6 @@ public class Repository {
 
     public static void remove(String filename) {
 
-        // TODO: needFixBug -> 我先建立一个文件并提交, 然后rm, 再重新建立输入相同的内容, 进行add, 结果add和remove区域里都有这个文件
-
         Stage forRemove = Utils.readObject(GITLET_STAGE, Stage.class);
         Commit commit = getCurrentCommit();
 
@@ -118,11 +117,21 @@ public class Repository {
             System.exit(0);
         }
 
+        // if the file isn't in CWD, but it's tracked, only add it to removeStage
+        String commitFileHashID = commit.getValueHashID(filename);
+        if(!new File(CWD, filename).exists() && tracked) {
+            forRemove.addRmHashId(filename,commitFileHashID);
+            Utils.writeObject(GITLET_STAGE, forRemove);
+            return;
+        }
+
         String fileHashId = createHashID(new File(CWD, filename));
 
         // the file is in addStage and only remove it from addStage
         if(staged) {
             forRemove.RmFromAddStage(filename,fileHashId);
+            Utils.writeObject(GITLET_STAGE, forRemove);
+            return;
         }
 
         // file is also in commit, add it to removeStage, the later commit will not have it (has implemented in commit func).
@@ -267,9 +276,11 @@ public class Repository {
             // get commit in this branch
             File branchCommitHashId = new File(GITLET_BRANCH, branchName);
             Commit commitOfBranch = Utils.readObject(new File(GITLET_COMMIT,readContentsAsString(branchCommitHashId)), Commit.class);
+            // get the untracked file in CWD
+            List<String> untrackedFiles = Utils.plainFilenamesIn(CWD);
             // check whether an untracked file will be created or not
             for (String file: commitOfBranch.getBlobFileName()){
-                if(!currentCommit.getBlobFileName().contains(file)){  //遍历还原的所有文件， 存在未追踪的则停止程序
+                if(!currentCommit.getBlobFileName().contains(file) && untrackedFiles.contains(file)){  //遍历还原的所有文件， 存在未追踪的则停止程序
                     System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
                     System.exit(0);
                 }
@@ -291,6 +302,7 @@ public class Repository {
             Utils.writeContents(GITLET_HEAD,branchName);
             Stage stage = Utils.readObject(GITLET_STAGE, Stage.class);
             stage.clear();
+            Utils.writeObject(GITLET_STAGE, stage);
         }
     }
     public static void checkout(String commitHashId, String filename){
@@ -341,9 +353,11 @@ public class Repository {
         Commit currentCommit = getCurrentCommit();
         // get commit in this hashcode
         Commit commitOfBranch = Utils.readObject(new File(GITLET_COMMIT,commitHashId), Commit.class);
+        // get the untracked file in CWD
+        List<String> untrackedFiles = Utils.plainFilenamesIn(CWD);
         // check whether an untracked file will be created or not
         for (String file: commitOfBranch.getBlobFileName()){
-            if(!currentCommit.getBlobFileName().contains(file)){  //遍历还原的所有文件， 存在未追踪的则停止程序
+            if(!currentCommit.getBlobFileName().contains(file) && untrackedFiles.contains(file)){  //遍历还原的所有文件， 存在未追踪的则停止程序
                 System.out.println("There is an untracked file in the way; delete it, or add and commit it first.");
                 System.exit(0);
             }
@@ -375,6 +389,7 @@ public class Repository {
         Stage stage = readObject(GITLET_STAGE, Stage.class);
         if(!stage.isEmpty()){
             System.out.println("You have uncommitted changes.");
+            System.exit(0);
         }
         File branchFile = new File(GITLET_BRANCH, branchName);
         if(!branchFile.exists()){
@@ -390,7 +405,7 @@ public class Repository {
         }
         File currentBranch = new File(GITLET_BRANCH, readContentsAsString(GITLET_HEAD) );// 当前分支的文件，读取获得当前提交的ID
         // 不能将分支与自身合并
-        if(commitOfBranchHashId.equals(readContentsAsString(GITLET_HEAD))){
+        if(commitOfBranchHashId.equals(readContentsAsString(currentBranch))){
             System.out.println("Cannot merge a branch with itself.");
             System.exit(0);
         }

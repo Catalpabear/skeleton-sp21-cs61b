@@ -18,7 +18,6 @@ public class Init {
         Utils.join(mkgit, "commits").mkdir();
         Utils.join(mkgit, "stage").createNewFile();
         Utils.join(mkgit, "branches").mkdir();
-        Utils.join(mkgit, "logs").mkdir();
         Utils.join(mkgit, "branches" + fileSepChar + "master").createNewFile();
         File head = new File(mkgit, "HEAD");
         head.createNewFile();

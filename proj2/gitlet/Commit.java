@@ -70,8 +70,8 @@ public class Commit implements Serializable {
             this.blobHashId.remove(fileName);
         }//移除Rm里面的文件
 
-        this.commitHashId = Utils.sha1(this.message,this.timestamp);
         this.parentHashId = commit.commitHashId; //after this commit committed, variable 'commit' is the parent commit
+        this.commitHashId = Utils.sha1(this.message,this.timestamp,this.parentHashId);
     }
     public boolean containsFileName(String filename){
         return blobHashId.containsKey(filename);
@@ -89,6 +89,10 @@ public class Commit implements Serializable {
     }
     public Collection<String> getBlobHashId(){
         return blobHashId.values();
+    }
+
+    public boolean hasKeyAndValue(String key, String value){
+        return blobHashId.containsKey(key) && blobHashId.get(key).equals(value);
     }
 
     @Override
