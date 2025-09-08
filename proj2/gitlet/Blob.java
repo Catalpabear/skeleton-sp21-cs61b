@@ -3,10 +3,7 @@ package gitlet;
 import java.io.File;
 import java.io.Serializable;
 
-import static gitlet.Repository.CWD;
-import static gitlet.Repository.GITLET_BLOB;
-
-public class Blob implements Serializable{
+public class Blob implements Serializable {
 
     private String blobHashID;
 
@@ -24,7 +21,7 @@ public class Blob implements Serializable{
         return blobHashID;
     }
 
-    public String getFileContents(){
+    public String getFileContents() {
         return fileContents;
     }
 

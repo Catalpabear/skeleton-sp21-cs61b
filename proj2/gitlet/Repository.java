@@ -305,8 +305,17 @@ public class Repository {
             Utils.writeObject(GITLET_STAGE, stage);
         }
     }
-    public static void checkout(String commitHashId, String filename){
-        Commit commit = getPointCommit(commitHashId); //TODO: 前六位查找
+    public static void checkout(String commitHashId, String filename) {
+        if(commitHashId.length() == 6){
+            List<String> totalCommit = Utils.plainFilenamesIn(GITLET_COMMIT);
+            for(String hashId: totalCommit){
+                if(hashId.substring(0, 6).equals(commitHashId)){
+                    commitHashId = hashId;
+                    break;
+                }
+            }
+        }
+        Commit commit = getPointCommit(commitHashId);
         helpCheckout(commit,filename);
     }
     private static void helpCheckout(Commit commit,String filename){
@@ -351,8 +360,9 @@ public class Repository {
 
     public static void reset(String commitHashId){
         Commit currentCommit = getCurrentCommit();
+
         // get commit in this hashcode
-        Commit commitOfBranch = Utils.readObject(new File(GITLET_COMMIT,commitHashId), Commit.class);
+        Commit commitOfBranch = getPointCommit(commitHashId);
         // get the untracked file in CWD
         List<String> untrackedFiles = Utils.plainFilenamesIn(CWD);
         // check whether an untracked file will be created or not
@@ -380,6 +390,7 @@ public class Repository {
 
         Stage stage = Utils.readObject(GITLET_STAGE, Stage.class);
         stage.clear();
+        Utils.writeObject(GITLET_STAGE, stage);
     }
 
     public static void merge(String branchName){
